@@ -30,7 +30,7 @@
   - [🙏 Acknowledgments ](#-acknowledgments-)
   - [📝 License ](#-license-)
 
-# 📖 Morse Decoder <a name="Morse-decoder"></a>
+# 📖 Oop School library <a name="opp school library"></a>
 
 Oop school library is an app that helps to add new students or teacher,add new books and save records of who borrowed a given book and when.
 
