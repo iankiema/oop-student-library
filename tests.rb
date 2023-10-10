@@ -6,9 +6,9 @@ require_relative 'rental'
 require 'date'
 
 classroom = Classroom.new('A101')
-student = Student.new(classroom:classroom, name: "John Doe")
-book = Book.new("Ruby Programming", "John Smith")
-person = Person.new(name:"alice")
+student = Student.new(classroom: classroom, name: 'John Doe')
+book = Book.new('Ruby Programming', 'John Smith')
+person = Person.new(name: 'alice')
 
 rental = Rental.new(Date.today, book, person)
 

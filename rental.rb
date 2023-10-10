@@ -6,6 +6,5 @@ class Rental
     @date = date
     @book = book
     @person = person
-
   end
 end
