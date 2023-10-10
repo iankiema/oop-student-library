@@ -1,11 +1,16 @@
 require_relative 'person'
-require_relative 'capitalize_decorator'
-require_relative 'trimmer_decorator'
+require_relative 'classroom'
+require_relative 'student'
+require_relative 'book'
+require_relative 'rental'
+require 'date'
 
-person = Person.new(name: 'maximilianus', age: 25)
-capitalized_person = CapitalizeDecorator.new(person)
-trimmed_person = TrimmerDecorator.new(capitalized_person)
+classroom = Classroom.new('A101')
+student = Student.new(classroom: classroom, name: 'John Doe')
+book = Book.new('Ruby Programming', 'John Smith')
+person = Person.new(name: 'alice')
 
-puts person.correct_name
-puts capitalized_person.correct_name
-puts trimmed_person.correct_name
+rental = Rental.new(Date.today, book, person)
+
+puts "#{student.name} is in Classroom #{student.classroom.label}"
+puts "#{book.title} has been rented by #{person.name} on #{rental.date}"
