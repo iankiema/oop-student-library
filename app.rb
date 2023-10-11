@@ -18,19 +18,19 @@ class App
 
   def list_books
     puts 'List of Books:'
-    @books.each { |book| puts "#{book.title} by #{book.author}"}
+    @books.each { |book| puts "#{book.title} by #{book.author}" }
   end
 
   def list_people
     puts 'List of People:'
-    @people.each {|person| puts "Name:#{person.name} ID: #{person.id}  Age:#{person.age}"}
+    @people.each { |person| puts "Name:#{person.name} ID: #{person.id}  Age:#{person.age}" }
   end
 
   def create_person
-    puts "Chosse the type of person to create:"
+    puts 'Chosse the type of person to create:'
     puts '1. Teacher'
     puts '2. Student'
-    type_option = gets .chomp.to_i
+    type_option = gets.chomp.to_i
 
     case type_option
     when 1
@@ -42,7 +42,6 @@ class App
     end
   end
 
-
   def create_teacher
     puts 'Enter name for the teacher:'
     name = gets.chomp
@@ -51,7 +50,7 @@ class App
     age = gets.chomp.to_i
 
     puts 'Does the teacher have parent permission? (Y/N)'
-    parent_permission = gets.chomp.upcase == "Y"
+    parent_permission = gets.chomp.upcase == 'Y'
 
     puts 'Enter Specialization:'
     specialization_label = gets.chomp
@@ -64,7 +63,7 @@ class App
   end
 
   def find_or_create_specialization(label)
-    specialization = @specializations.find { |s| s.label == label}
+    specialization = @specializations.find { |s| s.label == label }
     if specialization.nil?
       specialization = Specialization.new(label)
       @specializations << specialization
@@ -93,7 +92,7 @@ class App
   end
 
   def find_or_create_classroom(label)
-    classroom = @classrooms.find { |c| c.label == label}
+    classroom = @classrooms.find { |c| c.label == label }
     unless classroom
       classroom = Classroom.new(label)
       @classrooms << classroom
@@ -107,7 +106,7 @@ class App
     title = gets.chomp
     puts 'Enter author for the book:'
     author = gets.chomp
-    book = Book.new(title,author)
+    book = Book.new(title, author)
     @books << book
     puts "Book '#{title}' by #{author} created."
   end
@@ -119,8 +118,8 @@ class App
     puts 'Enter book title for the rental:'
     book_title = gets.chomp
 
-    person = @people.find { |p| p.id == person_id}
-    book = @books.find { |b| b.title == book_title}
+    person = @people.find { |p| p.id == person_id }
+    book = @books.find { |b| b.title == book_title }
 
     if person && book
       rental = Rental.new(Date.today, book, person)
@@ -140,7 +139,7 @@ class App
     if person
       puts "Rentals for #{person.name} (ID: #{person.id}):"
       person.rentals.each do |rental|
-        puts "#{rental.book.title} - #{rental.date}"
+        puts "#{rental.book.title} - #{rental.Date}"
       end
     else
       puts 'Person not found.'
