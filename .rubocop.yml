@@ -22,6 +22,8 @@ Metrics/CyclomaticComplexity:
   Exclude:
     - 'main.rb' 
     - 'process_choice' 
+Metrics/MethodLength:
+  Max: 30
 
 
 Style/Documentation:

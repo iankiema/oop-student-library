@@ -18,18 +18,24 @@ class App
 
   def list_books
     puts 'List of Books:'
-    @books.each { |book| puts "#{book.title} by #{book.author}" }
+    @books.each { |book| puts " Title: #{book.title}, Author: #{book.author}" }
   end
 
   def list_people
     puts 'List of People:'
-    @people.each { |person| puts "Name:#{person.name} ID: #{person.id}  Age:#{person.age}" }
+    @people.each do |person|
+      if person.is_a?(Teacher)
+        puts "[Teacher] Name:#{person.name} ID: #{person.id}  Age:#{person.age}"
+      elsif person.is_a?(Student)
+        puts "[Student] Name:#{person.name} ID:#{person.id} Age:#{person.age}"
+      else
+        puts "Unknown Type: Name: #{person.name} ID:#{person.id} Age:#{person.age}"
+      end
+    end
   end
 
   def create_person
-    puts 'Chosse the type of person to create:'
-    puts '1. Teacher'
-    puts '2. Student'
+    puts 'Do you want to create a teacher (1) or a student (2)? [Input the number]'
     type_option = gets.chomp.to_i
 
     case type_option
@@ -43,23 +49,20 @@ class App
   end
 
   def create_teacher
-    puts 'Enter name for the teacher:'
-    name = gets.chomp
-
     puts 'Enter age:'
     age = gets.chomp.to_i
 
-    puts 'Does the teacher have parent permission? (Y/N)'
-    parent_permission = gets.chomp.upcase == 'Y'
+    puts 'Enter name for the teacher:'
+    name = gets.chomp
 
-    puts 'Enter Specialization:'
+    puts 'Specialization:'
     specialization_label = gets.chomp
 
     specialization = find_or_create_specialization(specialization_label)
 
-    teacher = Teacher.new(name: name, age: age, specialization: specialization, parent_permission: parent_permission)
+    teacher = Teacher.new(name: name, age: age, specialization: specialization)
     @people << teacher
-    puts "Teacher #{name} created with ID #{teacher.id}"
+    puts 'Person created successfully!'
   end
 
   def find_or_create_specialization(label)
@@ -78,17 +81,13 @@ class App
     puts 'Enter name for the student:'
     name = gets.chomp
 
-    puts 'Does the student have parent permission?(Y/N):'
+    puts 'Has parent permission?(Y/N):'
     parent_permission = gets.chomp.upcase == 'Y'
 
-    puts 'Enter classroom'
-    classroom_label = gets.chomp
 
-    classroom = find_or_create_classroom(classroom_label)
-
-    student = Student.new(classroom: classroom, name: name, age: age, parent_permission: parent_permission)
+    student = Student.new(name: name, age: age, parent_permission: parent_permission)
     @people << student
-    puts "Student #{name} created with ID #{student.id} successfully"
+    puts 'Person created succesfully!'
   end
 
   def find_or_create_classroom(label)
@@ -102,44 +101,71 @@ class App
   end
 
   def create_book
-    puts 'Enter title for the book:'
+    puts 'Title:'
     title = gets.chomp
-    puts 'Enter author for the book:'
+    puts 'Author:'
     author = gets.chomp
     book = Book.new(title, author)
     @books << book
-    puts "Book '#{title}' by #{author} created."
+    puts 'Book created successfully.'
   end
 
   def create_rental
-    puts 'Enter person ID for the rental:'
-    person_id = gets.chomp.to_i
+    puts 'Select a person from the following list by number (not id):'
+    list_people_with_numbers
+    person_number = gets.chomp.to_i
 
-    puts 'Enter book title for the rental:'
-    book_title = gets.chomp
+    selected_person = @people[person_number - 1]
 
-    person = @people.find { |p| p.id == person_id }
-    book = @books.find { |b| b.title == book_title }
+    if selected_person
+      puts 'Select a book from the following list by number'
+      list_books_with_numbers
+      book_number = gets.chomp.to_i
 
-    if person && book
-      rental = Rental.new(Date.today, book, person)
-      @rentals << rental
-      puts "Rental created for #{person.name} (ID: #{person.id}) - #{book.title}"
+      selected_book = @books[book_number - 1]
+
+      if selected_book
+        puts 'Date (YYYY-MM-DD):'
+        rental_date = gets.chomp
+
+        begin
+          date = Date.parse(rental_date)
+          rental = Rental.new(date, selected_book)
+          @rentals << rental
+          puts 'Rental created successfully'
+        rescue ArgumentError
+          puts 'Invalid date format. Please use YYYY-MM-DD.'
+        end
+      else
+        puts 'Invalid book selection'
+      end
     else
-      puts 'Person or book not found'
+      puts 'Invalid person selection'
+    end
+  end
+
+  def list_books_with_numbers
+    @books.each_with_index do |book, index|
+      puts "#{index + 1}. #{book.title} by #{book.author}"
+    end
+  end
+
+  def list_people_with_numbers
+    @people.each_with_index do |person, index|
+      puts "#{index + 1}. #{person.name} (ID: #{person.id})"
     end
   end
 
   def list_rentals_for_person
-    puts 'Enter person ID to list rentals:'
+    puts 'ID of person:'
     person_id = gets.chomp.to_i
 
     person = @people.find { |p| p.id == person_id }
 
     if person
-      puts "Rentals for #{person.name} (ID: #{person.id}):"
+      puts 'Rentals:'
       person.rentals.each do |rental|
-        puts "#{rental.book.title} - #{rental.Date}"
+        puts "#{rental.book.title} - #{rental.date}"
       end
     else
       puts 'Person not found.'
