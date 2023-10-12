@@ -39,11 +39,15 @@ end
 
 def main
   app = App.new
+  welcome_shown = false
 
   loop do
-    welcome_message
-    display_menu
+    unless welcome_shown
+      welcome_message
+      welcome_shown = true
+    end
 
+    display_menu
     choice = gets.chomp.to_i
 
     process_choice(choice, app)
