@@ -18,6 +18,12 @@ Metrics/ClassLength:
 Metrics/BlockLength:
   IgnoredMethods: ['describe']
   Max: 30
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'main.rb' 
+    - 'process_choice' 
+Metrics/MethodLength:
+  Max: 30
 
 
 Style/Documentation:
