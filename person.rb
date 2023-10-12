@@ -21,6 +21,10 @@ class Person < Nameable
     @name
   end
 
+  def add_rental(rental)
+    @rentals << rental
+  end
+
   private
 
   def of_age?
@@ -29,9 +33,5 @@ class Person < Nameable
 
   def generate_id
     rand(1..1000)
-  end
-
-  def add_rental(rental)
-    @rentals << rental
   end
 end

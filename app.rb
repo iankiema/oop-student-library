@@ -126,11 +126,11 @@ class App
 
       if selected_book
         puts 'Date (YYYY-MM-DD):'
-        rental_date = gets.chomp
+        gets.chomp
 
         begin
-          date = Date.parse(rental_date)
-          rental = Rental.new(date, selected_book)
+          date = Time.now
+          rental = Rental.new(date, selected_book, selected_person)
           @rentals << rental
           puts 'Rental created successfully'
         rescue ArgumentError
@@ -165,7 +165,7 @@ class App
     if person
       puts 'Rentals:'
       person.rentals.each do |rental|
-        puts "#{rental.book.title} - #{rental.date}"
+        puts " Date: #{rental.date.strftime('%y-%m-%d')}, Book: #{rental.book.title} by #{rental.book.author} "
       end
     else
       puts 'Person not found.'
