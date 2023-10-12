@@ -84,7 +84,6 @@ class App
     puts 'Has parent permission?(Y/N):'
     parent_permission = gets.chomp.upcase == 'Y'
 
-
     student = Student.new(name: name, age: age, parent_permission: parent_permission)
     @people << student
     puts 'Person created succesfully!'
