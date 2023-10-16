@@ -39,6 +39,8 @@ end
 
 def main
   app = App.new
+  app.load_data
+
   welcome_shown = false
 
   loop do
@@ -54,6 +56,7 @@ def main
 
     break if choice == 7
   end
+  app.save_data
 end
 
 main

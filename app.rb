@@ -6,6 +6,7 @@ require_relative 'student'
 require_relative 'classroom'
 require_relative 'specialization'
 require 'date'
+require 'json'
 
 class App
   def initialize
@@ -169,5 +170,111 @@ class App
     else
       puts 'Person not found.'
     end
+  end
+
+  def save_data
+    save_books
+    save_people
+    save_rentals
+  end
+
+  def load_data
+    load_books
+    load_people
+    load_rentals
+  rescue Errno::ENOENT
+    # Handle the case when one or more files are missing
+    puts 'One or more data files are missing. Starting with empty data.'
+  end
+
+  private
+
+  def save_books
+    books_data = @books.map { |book| { "title" => book.title, "author" => book.author } }
+    File.open('books.json', 'w') { |file| file.write(JSON.pretty_generate(books_data)) }
+  end
+
+  def load_books
+    if File.exist?('books.json')
+      books_data = JSON.parse(File.read('books.json'))
+      @books = books_data.map { |book_data| Book.new(book_data['title'], book_data['author']) }
+    else
+      @books = []
+    end
+  end
+
+  def save_people
+    people_data = @people.map do |person|
+      if person.is_a?(Teacher)
+        { "name" => person.name, "age" => person.age, "specialization" => person.specialization.label }
+      else
+        { "name" => person.name, "age" => person.age }
+      end
+    end
+    File.open('people.json', 'w') { |file| file.write(JSON.pretty_generate(people_data)) }
+  end
+
+  def load_people
+    if File.exist?('people.json')
+      people_data = JSON.parse(File.read('people.json'))
+      @people = people_data.map do |person_data|
+        if person_data['specialization']
+          specialization = find_or_create_specialization(person_data['specialization'])
+          Teacher.new(specialization: specialization,
+                      name: person_data['name'], age: person_data['age'])
+        else
+          Student.new(name: person_data['name'], age: person_data['age'])
+        end
+      end
+    else
+      puts 'Warning: "people.json" file not found.'
+      @people = []
+    end
+  rescue JSON::ParserError => e
+    puts "Error parsing 'people.json': #{e.message}"
+    @people = []
+  end
+
+  def save_rentals
+    rentals_data = @rentals.map do |rental|
+      {
+        "date" => rental.date.strftime('%Y-%m-%d %H:%M:%S'),
+        "book" => { "title" => rental.book.title, "author" => rental.book.author },
+        "person" => { "id" => rental.person.id, "name" => rental.person.name, "age" => rental.person.age }
+      }
+    end
+    File.open('rentals.json', 'w') { |file| file.write(JSON.pretty_generate(rentals_data)) }
+  end
+
+  def load_rentals
+    if File.exist?('rentals.json')
+      rentals_data = JSON.parse(File.read('rentals.json'))
+      @rentals = rentals_data.map do |rental_data|
+        book = find_book_by_title(rental_data['book']['title'])
+        person = find_person_by_id(rental_data['person']['id'])
+
+        if book && person
+          Rental.new(DateTime.parse(rental_data['date']), book, person)
+        else
+          puts "Warning: Skipping invalid rental data - #{rental_data}"
+          nil
+        end
+      end.compact
+    else
+      puts 'Warning: "rentals.json" file not found.'
+      @rentals = []
+    end
+  rescue JSON::ParserError => e
+    puts "Error parsing 'rentals.json': #{e.message}"
+    @rentals = []
+  end
+
+  # Add helper methods to find book and person by title or id
+  def find_book_by_title(title)
+    @books.find { |book| book.title == title }
+  end
+
+  def find_person_by_id(id)
+    @people.find { |person| person.id == id }
   end
 end
