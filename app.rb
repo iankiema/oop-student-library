@@ -230,7 +230,7 @@ class App
         else
           classroom_label = person_data['classroom']
           classroom = find_or_create_classroom(classroom_label)
-          Student.new(name: person_data['name'], age: person_data['age'], classroom:classroom)
+          Student.new(name: person_data['name'], age: person_data['age'], classroom: classroom)
         end
       end
     else
