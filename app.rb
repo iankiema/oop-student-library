@@ -85,7 +85,12 @@ class App
     puts 'Has parent permission?(Y/N):'
     parent_permission = gets.chomp.upcase == 'Y'
 
-    student = Student.new(name: name, age: age, parent_permission: parent_permission)
+    puts 'Enter classroom'
+    classroom_label = gets.chomp
+
+    classroom = find_or_create_classroom(classroom_label)
+
+    student = Student.new(name: name, age: age, parent_permission: parent_permission, classroom: classroom)
     @people << student
     puts 'Person created succesfully!'
   end
@@ -223,7 +228,9 @@ class App
           Teacher.new(specialization: specialization,
                       name: person_data['name'], age: person_data['age'])
         else
-          Student.new(name: person_data['name'], age: person_data['age'])
+          classroom_label = person_data['classroom']
+          classroom = find_or_create_classroom(classroom_label)
+          Student.new(name: person_data['name'], age: person_data['age'], classroom: classroom)
         end
       end
     else

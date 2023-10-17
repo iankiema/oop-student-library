@@ -12,5 +12,9 @@
     "name": "Rose",
     "age": 23,
     "specialization": "Art"
+  },
+  {
+    "name": "Jake",
+    "age": 22
   }
 ]

@@ -8,8 +8,4 @@ class Teacher < Person
     @specialization = specialization
     specialization.add_teacher(self) unless specialization.teachers.include?(self)
   end
-
-  def can_use_services?
-    true
-  end
 end
