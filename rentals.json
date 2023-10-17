@@ -1,3 +1,14 @@
 [
-
+  {
+    "date": "2023-10-17 12:11:11",
+    "book": {
+      "title": "Harry porter ",
+      "author": "jk rowlings"
+    },
+    "person": {
+      "id": 924,
+      "name": "Rose",
+      "age": 23
+    }
+  }
 ]
