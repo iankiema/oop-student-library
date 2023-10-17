@@ -203,18 +203,7 @@ class App
     end
   end
 
-  def save_people
-    people_data = @people.map do |person|
-      if person.is_a?(Teacher)
-        { "name" => person.name, "age" => person.age, "specialization" => person.specialization.label }
-      else
-        { "name" => person.name, "age" => person.age }
-      end
-    end
-    File.open('people.json', 'w') { |file| file.write(JSON.pretty_generate(people_data)) }
-  end
-
-  def load_people
+   def load_people
     if File.exist?('people.json')
       people_data = JSON.parse(File.read('people.json'))
       @people = people_data.map do |person_data|
