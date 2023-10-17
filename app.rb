@@ -190,8 +190,8 @@ class App
   private
 
   def save_books
-    books_data = @books.map { |book| { "title" => book.title, "author" => book.author } }
-    File.open('books.json', 'w') { |file| file.write(JSON.pretty_generate(books_data)) }
+    books_data = @books.map { |book| { 'title' => book.title, 'author' => book.author } }
+    File.write('books.json', JSON.pretty_generate(books_data))
   end
 
   def load_books
@@ -203,7 +203,18 @@ class App
     end
   end
 
-   def load_people
+  def save_people
+    people_data = @people.map do |person|
+      if person.is_a?(Teacher)
+        { 'name' => person.name, 'age' => person.age, 'specialization' => person.specialization.label }
+      else
+        { 'name' => person.name, 'age' => person.age }
+      end
+    end
+    File.write('people.json', JSON.pretty_generate(people_data))
+  end
+
+  def load_people
     if File.exist?('people.json')
       people_data = JSON.parse(File.read('people.json'))
       @people = people_data.map do |person_data|
@@ -227,12 +238,12 @@ class App
   def save_rentals
     rentals_data = @rentals.map do |rental|
       {
-        "date" => rental.date.strftime('%Y-%m-%d %H:%M:%S'),
-        "book" => { "title" => rental.book.title, "author" => rental.book.author },
-        "person" => { "id" => rental.person.id, "name" => rental.person.name, "age" => rental.person.age }
+        'date' => rental.date.strftime('%Y-%m-%d %H:%M:%S'),
+        'book' => { 'title' => rental.book.title, 'author' => rental.book.author },
+        'person' => { 'id' => rental.person.id, 'name' => rental.person.name, 'age' => rental.person.age }
       }
     end
-    File.open('rentals.json', 'w') { |file| file.write(JSON.pretty_generate(rentals_data)) }
+    File.write('rentals.json', JSON.pretty_generate(rentals_data))
   end
 
   def load_rentals
