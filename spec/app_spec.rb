@@ -70,5 +70,4 @@ RSpec.describe App do
       expect { @app.list_people_with_numbers }.to output("1. John (ID: 1)\n").to_stdout
     end
   end
-
 end
