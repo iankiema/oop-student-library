@@ -1,9 +1,21 @@
 require_relative '../book'
+require_relative '../rental'
 
 RSpec.describe Book do
-  it 'creates a new book' do
-    book = Book.new('Title', 'Author')
-    expect(book.title).to eq('Title')
-    expect(book.author).to eq('Author')
+  describe '#add_rental' do
+    let(:book) { Book.new('Title', 'Author') }
+    let(:rental) { instance_double('Rental') }
+
+    it 'adds a rental to the book' do
+      expect {
+        book.add_rental(rental)
+      }.to change { book.rentals.count }.by(1)
+    end
+
+    it 'adds the correct rental to the book' do
+      book.add_rental(rental)
+
+      expect(book.rentals).to include(rental)
+    end
   end
 end
