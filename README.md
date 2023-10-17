@@ -1,11 +1,10 @@
 <a name="readme-top"></a>
-![](https://img.shields.io/badge/Microverse-blueviolet)
 
 <div align="center">
-
+ <img src="image/Cizzla_logo.png" alt="logo" width="140"  height="auto" />
   <br/>
 
-  <h3><b>oop school library</b></h3>
+  <h3><b>OOP School Library</b></h3>
 
 </div>
 
@@ -97,6 +96,11 @@ Deploy this project on any server: localhost, live host, cloud host.
 - GitHub: [@githubhandle](https://github.com/iankiema)
 - Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
 - LinkedIn: [LinkedIn](www.linkedin.com/in/ian-kiema-73419779)
+
+👤 **FirePicaso**
+
+- GitHub: [@githubhandle](https://github.com/firepicaso)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/mustakim-masum/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
