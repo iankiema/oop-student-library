@@ -7,9 +7,9 @@ RSpec.describe Book do
     let(:rental) { instance_double('Rental') }
 
     it 'adds a rental to the book' do
-      expect {
+      expect do
         book.add_rental(rental)
-      }.to change { book.rentals.count }.by(1)
+      end.to change { book.rentals.count }.by(1)
     end
 
     it 'adds the correct rental to the book' do
